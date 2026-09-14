@@ -1057,3 +1057,633 @@
             color: #0f172a;
             box-shadow: 0 2px 6px rgba(0,0,0,0.08);
         }
+
+/* Desain Custom Dropdown Grafik */
+        .custom-dropdown {
+            position: relative;
+            width: 250px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            z-index: 50;
+        }
+        .cd-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #475569;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .cd-header:hover {
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+        }
+        .cd-icon {
+            transition: transform 0.3s ease;
+            color: #94a3b8;
+        }
+        .custom-dropdown.open .cd-icon {
+            transform: rotate(180deg);
+            color: #3b82f6;
+        }
+        .cd-list {
+            position: absolute;
+            top: 115%;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .custom-dropdown.open .cd-list {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        .cd-list li {
+            padding: 12px 16px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .cd-list li i {
+            font-size: 0.85rem;
+        }
+        .cd-list li:hover {
+            background: #f8fafc;
+            color: #3b82f6;
+        }
+        .cd-list li.active {
+            background: #eff6ff;
+            color: #3b82f6;
+        }
+
+        /* =========================================================
+           STYLES AUTHENTICATION MODERN & RESPONSIF (LOGIN & REGISTER)
+           ========================================================= */
+        
+        /* Fix Z-Index untuk Toast Notification agar muncul di atas Auth Page */
+        .toast-container {
+            z-index: 100005 !important;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .auth-overlay-page {
+            position: fixed;
+            top: 0; left: 0; 
+            width: 100vw; 
+            min-height: 100vh;
+            min-height: 100dvh;
+            height: 100%;
+            /* Modern Animated Gradient Background */
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #0284c7, #3b82f6, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(0.85rem, 3vh, 2rem) clamp(0.75rem, 3vw, 1.5rem);
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s;
+            box-sizing: border-box;
+        }
+
+        .auth-overlay-page.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Floating Aesthetic Decor for Background */
+        .auth-decor {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 1;
+            animation: floatAnim 10s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+        .auth-decor-1 { width: clamp(200px, 40vw, 500px); height: clamp(200px, 40vw, 500px); background: rgba(56, 189, 248, 0.35); top: -10%; left: -10%; }
+        .auth-decor-2 { width: clamp(180px, 35vw, 450px); height: clamp(180px, 35vw, 450px); background: rgba(16, 185, 129, 0.2); bottom: -10%; right: -10%; animation-delay: -5s; }
+        
+        @keyframes floatAnim {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 80px) scale(1.1); }
+        }
+
+        /* Premium Glassmorphism Card (Responsive Width & Height) */
+        .auth-card-box {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            border-radius: clamp(20px, 4vw, 30px);
+            box-shadow: 0 35px 75px -15px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255,255,255,0.4);
+            width: 100%;
+            max-width: 450px;
+            padding: clamp(1.5rem, 4vh, 2.75rem) clamp(1.25rem, 4vw, 2.25rem);
+            margin: auto;
+            position: relative;
+            z-index: 2;
+            animation: authPopIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+            max-height: calc(100dvh - 2rem);
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(59, 130, 246, 0.3) transparent;
+        }
+
+        .auth-card-box::-webkit-scrollbar {
+            width: 5px;
+        }
+        .auth-card-box::-webkit-scrollbar-thumb {
+            background: rgba(59, 130, 246, 0.3);
+            border-radius: 10px;
+        }
+
+        @keyframes authPopIn {
+            0% { opacity: 0; transform: scale(0.92) translateY(25px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .auth-brand-head {
+            text-align: center;
+            margin-bottom: clamp(1.25rem, 2.5vh, 2rem);
+        }
+        .auth-logo-badge {
+            width: clamp(48px, 10vw, 64px); 
+            height: clamp(48px, 10vw, 64px);
+            background: linear-gradient(135deg, #3b82f6, #0284c7);
+            color: #fff;
+            border-radius: clamp(14px, 2.5vw, 20px);
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 12px 25px rgba(59, 130, 246, 0.35);
+            margin-bottom: clamp(0.5rem, 1.5vh, 0.85rem);
+            transform: rotate(-5deg);
+            transition: transform 0.4s ease;
+        }
+        .auth-card-box:hover .auth-logo-badge {
+            transform: rotate(0deg) scale(1.05);
+        }
+        
+        .auth-title { 
+            font-size: clamp(1.35rem, 3.5vw, 1.75rem); 
+            font-weight: 800; 
+            color: #0f172a; 
+            margin: 0; 
+            letter-spacing: -0.5px; 
+            line-height: 1.2;
+        }
+        .auth-subtitle { 
+            font-size: clamp(0.825rem, 2vw, 0.95rem); 
+            color: #64748b; 
+            margin-top: 0.35rem; 
+            font-weight: 500; 
+        }
+
+        .auth-form-group {
+            margin-bottom: clamp(0.85rem, 1.8vh, 1.25rem);
+            position: relative;
+        }
+        .auth-label {
+            display: block;
+            font-size: clamp(0.78rem, 1.8vw, 0.85rem);
+            font-weight: 700;
+            color: #334155;
+            margin-bottom: 0.35rem;
+            margin-left: 0.2rem;
+        }
+        .auth-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .auth-input-wrapper i.input-icon {
+            position: absolute;
+            left: 16px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            transition: color 0.4s ease, transform 0.4s ease;
+        }
+        .auth-input {
+            width: 100%;
+            padding: clamp(0.7rem, 1.5vh, 0.85rem) 1rem clamp(0.7rem, 1.5vh, 0.85rem) 2.75rem;
+            border-radius: 14px;
+            border: 2px solid transparent;
+            font-family: inherit;
+            font-size: clamp(0.875rem, 2vw, 0.95rem);
+            font-weight: 500;
+            color: #0f172a;
+            background: #f1f5f9;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+            box-sizing: border-box;
+        }
+        .auth-input::placeholder { color: #94a3b8; font-weight: 400; }
+        
+        .auth-input:focus {
+            outline: none;
+            background: #ffffff;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), inset 0 2px 4px rgba(0,0,0,0.01);
+            transform: translateY(-2px);
+        }
+        .auth-input:focus + i.input-icon { 
+            color: #3b82f6; 
+            transform: scale(1.1);
+        }
+        
+        .toggle-password-icon {
+            position: absolute;
+            right: 16px;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 4px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            z-index: 5;
+        }
+        .toggle-password-icon:hover { color: #3b82f6; transform: scale(1.1); }
+
+        .auth-btn-primary {
+            width: 100%;
+            padding: clamp(0.75rem, 1.8vh, 0.95rem);
+            border-radius: 14px;
+            border: none;
+            background: linear-gradient(135deg, #2563eb, #0ea5e9);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: clamp(0.9rem, 2vw, 1.025rem);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: clamp(1.25rem, 2.5vh, 1.75rem);
+            position: relative;
+            overflow: hidden;
+        }
+        .auth-btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.3), transparent);
+            transform: skewX(-20deg);
+            transition: all 0.6s ease;
+        }
+        .auth-btn-primary:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 16px 28px rgba(37, 99, 235, 0.4);
+        }
+        .auth-btn-primary:hover::after {
+            left: 150%;
+        }
+        .auth-btn-primary:active { transform: translateY(0) scale(0.98); }
+
+        .auth-flex-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: clamp(0.8rem, 1.8vw, 0.875rem);
+        }
+        .auth-link {
+            color: #2563eb;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .auth-link:hover { color: #0284c7; text-decoration: underline; }
+
+        .auth-hint-text {
+            font-size: clamp(0.7rem, 1.6vw, 0.75rem);
+            color: #64748b;
+            margin-top: 0.3rem;
+            display: block;
+            margin-left: 0.2rem;
+            line-height: 1.3;
+        }
+
+        .otp-input-group {
+            display: flex;
+            gap: clamp(4px, 1.5vw, 8px);
+            justify-content: center;
+            margin: 1.25rem 0;
+        }
+        .otp-digit {
+            width: clamp(38px, 10vw, 48px);
+            height: clamp(48px, 12vw, 56px);
+            text-align: center;
+            font-size: clamp(1.2rem, 3vw, 1.4rem);
+            font-weight: 800;
+            border-radius: 12px;
+            border: 2px solid #cbd5e1;
+            background: #f8fafc;
+            color: #0f172a;
+            transition: all 0.3s ease;
+        }
+        .otp-digit:focus {
+            border-color: #2563eb;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+            outline: none;
+            transform: translateY(-2px);
+        }
+
+        /* Penyesuaian Responsif Khusus Mobile & Layar Pendek */
+        @media (max-width: 480px) {
+            .auth-overlay-page {
+                padding: 0.75rem;
+            }
+            .auth-card-box {
+                padding: 1.5rem 1.15rem;
+                border-radius: 22px;
+            }
+            .auth-brand-head {
+                margin-bottom: 1.25rem;
+            }
+            .auth-form-group {
+                margin-bottom: 0.85rem;
+            }
+        }
+
+        @media (max-height: 680px) {
+            .auth-brand-head {
+                margin-bottom: 0.85rem;
+            }
+            .auth-logo-badge {
+                width: 44px;
+                height: 44px;
+                font-size: 1.35rem;
+                margin-bottom: 0.25rem;
+            }
+            .auth-title {
+                font-size: 1.35rem;
+            }
+            .auth-subtitle {
+                font-size: 0.8rem;
+                margin-top: 0.2rem;
+            }
+            .auth-form-group {
+                margin-bottom: 0.75rem;
+            }
+            .auth-btn-primary {
+                margin-top: 1rem;
+                padding: 0.7rem;
+            }
+        }
+
+        /* =========================================================
+           STYLES BARU UNTUK TANGGAL REALTIME & LOGOUT MODAL
+           ========================================================= */
+
+       @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap');
+
+/* --- 1. WADAH UTAMA (Animated Gradient & Glassmorphism) --- */
+.ws-date-badge {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    
+    /* Animated Gradient Background Keren */
+    background: linear-gradient(135deg, #0f172a, #1e293b, #111827, #1e1b4b);
+    background-size: 250% 250%;
+    animation: gradientShift 8s ease infinite;
+    
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 10px 25px 10px 10px;
+    border-radius: 50px; /* Bentuk pill/kapsul modern */
+    
+    /* 3D Premium Shadow & Glow */
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.4), 
+        0 0 20px rgba(59, 130, 246, 0.15),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+}
+
+/* Animasi Background Mengalir */
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Efek Kilap (Shine) saat Hover - Lebih Smooth */
+.ws-date-badge::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -150%;
+    width: 100%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+    transform: skewX(-25deg);
+    transition: 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ws-date-badge:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.5), 
+        0 0 30px rgba(59, 130, 246, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    border-color: rgba(96, 165, 250, 0.3);
+}
+
+.ws-date-badge:hover::before {
+    left: 150%;
+}
+
+/* --- 2. ICON ANIMASI (Floating & Glowing) --- */
+.ws-icon-anim {
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: #ffffff;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+        0 4px 15px rgba(59, 130, 246, 0.5),
+        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+}
+
+.ws-icon-anim i {
+    font-size: 1.3rem;
+    /* Ubah dari swing ke floating agar lebih elegan & profesional */
+    animation: floatIcon 3s ease-in-out infinite; 
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-3px) scale(1.1); }
+}
+
+/* --- 3. JAM DIGITAL (Gradient Text) --- */
+.realtime-clock {
+    font-size: 1.6rem;
+    font-weight: 800;
+    /* Teks Jam Bergradasi */
+    background: linear-gradient(to right, #93c5fd, #d8b4fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    line-height: 1;
+    letter-spacing: 0.5px;
+}
+
+/* Animasi Titik Dua (Glow Pulse) */
+.clock-colon {
+    animation: fadeGlowPulse 1.5s ease-in-out infinite;
+    -webkit-text-fill-color: #93c5fd; /* Reset gradient clip */
+}
+
+@keyframes fadeGlowPulse {
+    0%, 100% { opacity: 1; text-shadow: 0 0 10px rgba(147, 197, 253, 0.8); }
+    50% { opacity: 0.3; text-shadow: none; }
+}
+
+/* --- 4. TEKS TANGGAL & ZONA WAKTU --- */
+.ws-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.ws-d-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-top: 4px;
+    letter-spacing: 0.3px;
+}
+
+.rt-wib {
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: #38bdf8;
+    -webkit-text-fill-color: #38bdf8; /* Reset gradient clip */
+    background: rgba(56, 189, 248, 0.1);
+    padding: 3px 8px;
+    border-radius: 8px;
+    margin-left: 8px;
+    border: 1px solid rgba(56, 189, 248, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+        /* Logout Pop-up Warning Design */
+        .logout-modal-content {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+        .logout-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background: #fee2e2;
+            color: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1.5rem auto;
+            box-shadow: 0 0 0 10px rgba(239, 68, 68, 0.1);
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .logout-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.75rem;
+        }
+        .logout-desc {
+            font-size: 0.95rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+        .logout-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+        }
+        .btn-cancel-logout {
+            flex: 1;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            background: #ffffff;
+            color: #475569;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-cancel-logout:hover {
+            background: #f1f5f9;
+            color: #0f172a;
+        }
+        .btn-confirm-logout {
+            flex: 1;
+            padding: 0.75rem 1.25rem;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #ffffff;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-confirm-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
