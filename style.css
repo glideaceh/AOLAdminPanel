@@ -2117,3 +2117,44 @@
                 width: 100%;
             }
         }
+
+ 
+    /* --- Tombol Hapus Semua Transaksi --- */
+.btn-delete-all-trx {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 40px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.btn-delete-all-trx:hover {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
+}
+
+.btn-delete-all-trx:active {
+    transform: translateY(0) scale(0.98);
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+}
+
+.btn-delete-all-trx .icon-trash {
+    font-size: 0.95rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-delete-all-trx:hover .icon-trash {
+    transform: rotate(-12deg) scale(1.15);
+}
+        
