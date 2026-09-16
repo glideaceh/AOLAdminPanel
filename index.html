@@ -20,7 +20,7 @@
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/glideaceh/AOLAdminPanelNew/style.css"> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/glideaceh/AOLAdminPanel/style.css"> 
 
     <style>
 /* ==========================================
@@ -380,6 +380,104 @@
 @keyframes toastProgress {
     0% { width: 100%; }
     100% { width: 0%; }
+}
+
+/* ==========================================
+   AUTH PAGE MOBILE NO-SCROLL CSS (PEMBARUAN)
+========================================== */
+@media (max-width: 768px) {
+    .auth-overlay-page {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh; /* Dynamic viewport untuk mobile */
+        overflow: hidden !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        box-sizing: border-box;
+        z-index: 999999;
+    }
+    .auth-card-box {
+        width: 100% !important;
+        max-width: 400px !important;
+        padding: 1.25rem !important;
+        margin: 0 !important;
+        border-radius: 1rem !important;
+        box-sizing: border-box;
+        max-height: 100%;
+    }
+    .auth-brand-head {
+        margin-bottom: 0.75rem !important;
+    }
+    .auth-logo-badge {
+        width: 35px !important;
+        height: 35px !important;
+        font-size: 1.2rem !important;
+        margin: 0 auto 0.4rem auto !important;
+    }
+    .auth-title {
+        font-size: 1.15rem !important;
+        margin-bottom: 0.2rem !important;
+    }
+    .auth-subtitle {
+        font-size: 0.75rem !important;
+        margin-bottom: 0 !important;
+    }
+    .auth-form-group {
+        margin-bottom: 0.6rem !important;
+    }
+    .auth-label {
+        font-size: 0.75rem !important;
+        margin-bottom: 0.2rem !important;
+    }
+    .auth-input-wrapper .auth-input {
+        padding: 0.5rem 0.5rem 0.5rem 2.2rem !important;
+        font-size: 0.85rem !important;
+        height: 36px !important;
+    }
+    .auth-input-wrapper .input-icon {
+        font-size: 0.85rem !important;
+        left: 0.8rem !important;
+    }
+    .auth-input-wrapper .toggle-password-icon {
+        font-size: 0.85rem !important;
+        right: 0.8rem !important;
+    }
+    .auth-hint-text {
+        font-size: 0.65rem !important;
+        margin-top: 0.15rem !important;
+        line-height: 1 !important;
+    }
+    .auth-btn-primary {
+        padding: 0.6rem !important;
+        font-size: 0.9rem !important;
+        margin-top: 0.5rem !important;
+        height: 40px !important;
+    }
+    .auth-flex-link {
+        margin-bottom: 0.5rem !important;
+        font-size: 0.8rem !important;
+    }
+    
+    /* Tweaks Khusus Form Register Agar Fit */
+    #box-register .auth-form-group {
+        margin-bottom: 0.5rem !important;
+    }
+    #box-register .auth-input-wrapper .auth-input {
+        height: 34px !important;
+    }
+    #box-register .auth-brand-head {
+        margin-bottom: 0.5rem !important;
+    }
+    #box-register .auth-logo-badge {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 1rem !important;
+    }
 }
     </style>
 </head>
@@ -1301,7 +1399,7 @@
     </div>
 
     <!-- Script Javascript -->
-    <script src="https://cdn.jsdelivr.net/gh/glideaceh/AOLAdminPanelNew/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/glideaceh/AOLAdminPanel/script.js"></script>
     <script>
        document.addEventListener('DOMContentLoaded', () => {
     
