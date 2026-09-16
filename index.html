@@ -24,91 +24,131 @@
 
     <style>
 /* ==========================================
-   FIX AUTH PAGE (NO SCROLL & NO BLINK)
+   UPDATE: FIX LOGIN & REGISTER RESPONSIVE, NO-SCROLL, NO-FLICKER
 ========================================== */
-html, body {
-    overflow-x: hidden;
-}
-
 #auth-page-container {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    height: 100dvh !important;
+    width: 100% !important;
+    height: 100dvh !important; /* Gunakan dvh agar tidak melompat saat keyboard HP muncul */
+    min-height: 100vh !important;
+    background-color: #f1f5f9 !important;
+    background-image: radial-gradient(#e2e8f0 1px, transparent 1px) !important;
+    background-size: 20px 20px !important;
+    z-index: 9999999 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    background: #f1f5f9 !important;
-    z-index: 99999 !important;
-    overflow: hidden !important; 
-    animation: none !important;
+    overflow: hidden !important; /* Hilangkan scrollbar di mode Web */
+    animation: none !important; /* Hilangkan efek kedip/animasi awal */
     transition: none !important;
 }
 
 .auth-decor {
-    animation: none !important;
-    transition: none !important;
-    display: none !important; /* Menghilangkan dekorasi latar untuk mencegah kedip di mobile */
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    z-index: -1;
+    animation: none !important; /* Membekukan ornamen belakang agar tidak kedip */
 }
+.auth-decor-1 { width: 300px; height: 300px; background: rgba(59, 130, 246, 0.2); top: -50px; left: -50px; }
+.auth-decor-2 { width: 250px; height: 250px; background: rgba(16, 185, 129, 0.2); bottom: -50px; right: -50px; }
 
 .auth-card-box {
-    background: white !important;
-    width: 90% !important;
-    max-width: 400px !important;
-    padding: 2rem !important;
-    border-radius: 1.25rem !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
-    max-height: 90dvh !important; 
-    overflow-y: auto !important; 
-    animation: none !important;
-    transition: none !important;
-    margin: auto !important;
+    width: 92% !important;
+    max-width: 480px !important; /* Mempertahankan ukuran card tetap besar */
+    background: #ffffff !important;
+    border-radius: 1.5rem !important;
+    padding: 2.5rem !important;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    max-height: 95dvh !important; /* Mencegah terpotong jika layar hp sangat kecil */
+    overflow-y: auto !important; /* Hanya muncul scroll internal jika sangat diperlukan */
+    animation: none !important; /* Hilangkan animasi pantulan pop up */
+    transform: none !important;
     position: relative !important;
-    z-index: 100000 !important;
+    margin: 0 !important;
+}
+
+.auth-card-box::-webkit-scrollbar { width: 0px; display: none; }
+
+.auth-form-group { margin-bottom: 1.25rem !important; text-align: left; }
+.auth-label {
+    display: block !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    margin-bottom: 0.5rem !important;
+}
+.auth-input-wrapper { position: relative !important; width: 100% !important; }
+.auth-input {
+    width: 100% !important;
+    padding: 1rem 1rem 1rem 3rem !important; /* Mempertahankan kolom input besar */
+    font-size: 16px !important; /* WAJIB 16px agar browser HP tidak auto zoom (penyebab flicker) */
+    font-family: inherit !important;
+    color: #0f172a !important;
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 0.875rem !important;
     box-sizing: border-box !important;
+    outline: none !important;
+}
+.auth-input:focus {
+    border-color: #3b82f6 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 0 4px rgba(59,130,246,0.1) !important;
 }
 
-/* Sembunyikan scrollbar di dalam card auth */
-.auth-card-box::-webkit-scrollbar {
-    width: 0px;
-    background: transparent;
+.input-icon, .toggle-password-icon {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    color: #64748b !important;
+    font-size: 1.1rem !important;
+    z-index: 2;
+}
+.input-icon { left: 1.1rem !important; }
+.toggle-password-icon { right: 1.1rem !important; cursor: pointer !important; }
+
+.auth-btn-primary {
+    width: 100% !important;
+    padding: 1.125rem !important; /* Mempertahankan tombol berukuran besar */
+    font-size: 1.1rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 0.875rem !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    margin-top: 1.5rem !important;
+}
+#btn-login-submit { background: linear-gradient(135deg, #3b82f6, #2563eb) !important; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25) !important; }
+#btn-reg-submit { background: linear-gradient(135deg, #10b981, #059669) !important; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25) !important; }
+
+.auth-hint-text {
+    display: block !important;
+    font-size: 0.8rem !important;
+    color: #64748b !important;
+    margin-top: 0.4rem !important;
 }
 
-.auth-brand-head { margin-bottom: 1.5rem !important; text-align: center; }
-.auth-logo-badge { margin: 0 auto 0.75rem auto !important; }
-.auth-form-group { margin-bottom: 1rem !important; text-align: left; }
-.auth-label { display: block; font-size: 0.8rem; font-weight: 600; color: #475569; margin-bottom: 0.4rem; }
-.auth-input-wrapper { position: relative; }
-.auth-input { width: 100%; padding: 0.75rem 1rem 0.75rem 2.5rem; border: 1px solid #e2e8f0; border-radius: 0.75rem; outline: none; font-family: inherit; font-size: 0.9rem; box-sizing: border-box; }
-.auth-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); }
-.input-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; }
-.toggle-password-icon { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); color: #94a3b8; cursor: pointer; }
-.auth-hint-text { font-size: 0.7rem; color: #94a3b8; margin-top: 0.3rem; display: block; }
-.auth-flex-link { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; }
-.auth-link { color: #3b82f6; font-size: 0.8rem; font-weight: 600; text-decoration: none; cursor: pointer; }
-.auth-btn-primary { width: 100%; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 0.75rem; border-radius: 0.75rem; font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 0.5rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
-
-/* Mode Mobile agar lebih compact dan tidak muncul scroll */
-@media (max-width: 768px) {
-    .auth-card-box {
-        padding: 1.5rem !important;
-        max-height: 95dvh !important;
-    }
-    .auth-form-group {
-        margin-bottom: 0.85rem !important;
-    }
-    .auth-brand-head {
-        margin-bottom: 1rem !important;
-    }
-    .auth-input {
-        padding: 0.65rem 1rem 0.65rem 2.2rem !important;
-        font-size: 0.85rem !important;
-    }
+/* Sinkronisasi dengan perpindahan JS (agar perpindahan halaman dari js tidak rusak) */
+#box-login[style*="display: none"],
+#box-register[style*="display: none"] {
+    display: none !important;
 }
+
+@media (max-width: 480px) {
+    .auth-card-box { width: 95% !important; padding: 1.75rem !important; }
+    .auth-title { font-size: 1.5rem !important; }
+}
+/* ==========================================
+   END UPDATE LOGIN & REGISTER
+========================================== */
 
 /* ==========================================
    PWA FLOATING INSTALL CARD CSS
@@ -586,7 +626,7 @@ html, body {
                     <span class="auth-hint-text">Min. 8 karakter, kombinasi huruf & angka, min. 1 huruf besar</span>
                 </div>
 
-                <button type="submit" id="btn-reg-submit" class="auth-btn-primary" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25);">
+                <button type="submit" id="btn-reg-submit" class="auth-btn-primary">
                     <i class="fas fa-user-plus"></i> <span>Daftar Akun</span>
                 </button>
             </form>
