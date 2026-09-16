@@ -151,6 +151,25 @@
 ========================================== */
 
 /* ==========================================
+   UPDATE: PERBESAR UKURAN NAVBAR BOTTOM
+========================================== */
+.mobile-nav .mn-item {
+    padding: 0.5rem 0.25rem !important;
+    gap: 0.35rem !important;
+}
+.mobile-nav .mn-icon-wrapper i, 
+.mobile-nav .mn-icon {
+    font-size: 1.45rem !important; /* Perbesar icon dari standar */
+}
+.mobile-nav .mn-text {
+    font-size: 0.85rem !important; /* Perbesar ukuran teks */
+    font-weight: 600 !important;
+}
+/* ==========================================
+   END UPDATE NAVBAR BOTTOM
+========================================== */
+
+/* ==========================================
    PWA FLOATING INSTALL CARD CSS
 ========================================== */
 .pwa-floating-card {
@@ -165,7 +184,7 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    z-index: 999999;
+    z-index: 99999999; /* UPDATE Z-INDEX: Agar tampil di atas overlay halaman login/register */
     width: 90%;
     max-width: 380px;
     transition: bottom 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
@@ -1710,24 +1729,22 @@ const pwaCard = document.getElementById('pwa-install-card');
 const btnInstall = document.getElementById('pwa-btn-install');
 const btnCancel = document.getElementById('pwa-btn-cancel');
 
-// Deteksi iOS dan mode standalone (jika sudah terinstal)
+// Pastikan mendeteksi device/mode
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
-// Trigger pop up resmi sistem (di Chrome Android / Desktop)
+// Mencegah dan menangkap event instal resmi (Android/Desktop)
 window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    
-    // Tampilkan tombol instal buatan kita setelah 2 detik jika belum terinstal
-    if (!localStorage.getItem('pwa_closed') && !isStandalone) {
-        setTimeout(() => pwaCard.classList.add('show'), 2000);
-    }
 });
 
-// Fallback untuk iOS (karena Apple memblokir beforeinstallprompt)
-if (isIOS && !localStorage.getItem('pwa_closed') && !isStandalone) {
-    setTimeout(() => pwaCard.classList.add('show'), 2000);
+// MEMAKSA NOTIFIKASI SELALU MUNCUL:
+// Berjalan otomatis selama pengguna tidak membukanya melalui mode PWA (standalone)
+if (!isStandalone) {
+    setTimeout(() => {
+        if (pwaCard) pwaCard.classList.add('show');
+    }, 2000); // Muncul setelah 2 detik halaman termuat
 }
 
 // Aksi ketika klik tombol INSTALL KITA
@@ -1745,7 +1762,7 @@ if(btnInstall) {
         } else if (isIOS) {
             alert('Sistem Apple iOS membatasi instalasi otomatis.\\n\\nSilakan ketuk ikon "Share" (kotak dengan panah atas) di bar bawah Safari, lalu pilih "Add to Home Screen" (Tambahkan ke Layar Utama).');
         } else {
-            alert('Aplikasi sudah terinstal atau browser Anda tidak mendukung fitur ini.');
+            alert('Aplikasi sudah terinstal, atau browser Anda tidak mendukung pop-up instalasi otomatis.');
             pwaCard.classList.remove('show');
         }
     });
@@ -1755,7 +1772,7 @@ if(btnInstall) {
 if(btnCancel) {
     btnCancel.addEventListener('click', () => {
         pwaCard.classList.remove('show');
-        localStorage.setItem('pwa_closed', 'true');
+        // Fitur blokir via LocalStorage telah dihapus sesuai permintaan agar notifikasi "tetap muncul" jika di-refresh
     });
 }
 
