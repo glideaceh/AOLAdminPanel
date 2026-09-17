@@ -1760,7 +1760,7 @@ const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|Bla
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 
 // Deteksi apakah PWA sudah pernah diinstal (berdasarkan LocalStorage fallback)
-const isInstalled = localStorage.getItem('pwa_installed') === 'true';
+const isInstalled = localStorage.getItem('pwa_admin_installed') === 'true';
 
 // Mencegah dan menangkap event instal resmi (Android/Desktop)
 window.addEventListener('beforeinstallprompt', (e) => {
