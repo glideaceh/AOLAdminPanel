@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/glideaceh/AOLAdminPanel/style.css"> 
 
     <style>
-/* ==========================================
+    /* ==========================================
    UPDATE: FIX LOGIN & REGISTER RESPONSIVE, NO-SCROLL, NO-FLICKER
 ========================================== */
 #auth-page-container {
@@ -33,148 +33,21 @@
     width: 100% !important;
     height: 100dvh !important; /* Gunakan dvh agar tidak melompat saat keyboard HP muncul */
     min-height: 100vh !important;
-    background-color: #f1f5f9 !important;
-    background-image: radial-gradient(#e2e8f0 1px, transparent 1px) !important;
-    background-size: 20px 20px !important;
-    z-index: 9999999 !important;
-    display: flex !important;
+
+display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     overflow: hidden !important; /* Hilangkan scrollbar di mode Web */
-    animation: none !important; /* Hilangkan efek kedip/animasi awal */
-    transition: none !important;
+    animation:  !important; /* Hilangkan efek kedip/animasi awal */
+    transition:  !important;
 }
 
-.auth-decor {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(60px);
-    z-index: -1;
-    animation: none !important; /* Membekukan ornamen belakang agar tidak kedip */
-}
-.auth-decor-1 { width: 300px; height: 300px; background: rgba(59, 130, 246, 0.2); top: -50px; left: -50px; }
-.auth-decor-2 { width: 250px; height: 250px; background: rgba(16, 185, 129, 0.2); bottom: -50px; right: -50px; }
-
-.auth-card-box {
-    width: 92% !important;
-    max-width: 480px !important; /* Mempertahankan ukuran card tetap besar */
-    background: #ffffff !important;
-    border-radius: 1.5rem !important;
-    padding: 2.5rem !important;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
-    border: 1px solid rgba(226, 232, 240, 0.8) !important;
-    max-height: 95dvh !important; /* Mencegah terpotong jika layar hp sangat kecil */
-    overflow-y: auto !important; /* Hanya muncul scroll internal jika sangat diperlukan */
-    animation: none !important; /* Hilangkan animasi pantulan pop up */
-    transform: none !important;
-    position: relative !important;
-    margin: 0 !important;
-}
-
-.auth-card-box::-webkit-scrollbar { width: 0px; display: none; }
-
-.auth-form-group { margin-bottom: 1.25rem !important; text-align: left; }
-.auth-label {
-    display: block !important;
-    font-size: 0.95rem !important;
-    font-weight: 700 !important;
-    color: #1e293b !important;
-    margin-bottom: 0.5rem !important;
-}
-.auth-input-wrapper { position: relative !important; width: 100% !important; }
-.auth-input {
-    width: 100% !important;
-    padding: 1rem 1rem 1rem 3rem !important; /* Mempertahankan kolom input besar */
-    font-size: 16px !important; /* WAJIB 16px agar browser HP tidak auto zoom (penyebab flicker) */
-    font-family: inherit !important;
-    color: #0f172a !important;
-    background: #f8fafc !important;
-    border: 1px solid #cbd5e1 !important;
-    border-radius: 0.875rem !important;
-    box-sizing: border-box !important;
-    outline: none !important;
-}
-.auth-input:focus {
-    border-color: #3b82f6 !important;
-    background: #ffffff !important;
-    box-shadow: 0 0 0 4px rgba(59,130,246,0.1) !important;
-}
-
-.input-icon, .toggle-password-icon {
-    position: absolute !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    color: #64748b !important;
-    font-size: 1.1rem !important;
-    z-index: 2;
-}
-.input-icon { left: 1.1rem !important; }
-.toggle-password-icon { right: 1.1rem !important; cursor: pointer !important; }
-
-.auth-btn-primary {
-    width: 100% !important;
-    padding: 1.125rem !important; /* Mempertahankan tombol berukuran besar */
-    font-size: 1.1rem !important;
-    font-weight: 700 !important;
-    color: #ffffff !important;
-    border: none !important;
-    border-radius: 0.875rem !important;
-    cursor: pointer !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 0.5rem !important;
-    margin-top: 1.5rem !important;
-}
-#btn-login-submit { background: linear-gradient(135deg, #3b82f6, #2563eb) !important; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.25) !important; }
-#btn-reg-submit { background: linear-gradient(135deg, #10b981, #059669) !important; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25) !important; }
-
-.auth-hint-text {
-    display: block !important;
-    font-size: 0.8rem !important;
-    color: #64748b !important;
-    margin-top: 0.4rem !important;
-}
-
-/* Sinkronisasi dengan perpindahan JS (agar perpindahan halaman dari js tidak rusak) */
-#box-login[style*="display: none"],
-#box-register[style*="display: none"] {
-    display: none !important;
-}
-
-@media (max-width: 480px) {
-    .auth-card-box { width: 95% !important; padding: 1.75rem !important; }
-    .auth-title { font-size: 1.5rem !important; }
-}
-/* ==========================================
-   END UPDATE LOGIN & REGISTER
-========================================== */
-
-/* ==========================================
-   UPDATE: PERBESAR UKURAN NAVBAR BOTTOM
-========================================== */
-.mobile-nav .mn-item {
-    padding: 0.5rem 0.25rem !important;
-    gap: 0.35rem !important;
-}
-.mobile-nav .mn-icon-wrapper i, 
-.mobile-nav .mn-icon {
-    font-size: 1.45rem !important; /* Perbesar icon dari standar */
-}
-.mobile-nav .mn-text {
-    font-size: 0.85rem !important; /* Perbesar ukuran teks */
-    font-weight: 600 !important;
-}
-/* ==========================================
-   END UPDATE NAVBAR BOTTOM
-========================================== */
-
-/* ==========================================
+  /* ==========================================
    PWA FLOATING INSTALL CARD CSS (UPDATED MODERN & SMOOTH)
 ========================================== */
 .pwa-floating-card {
     position: fixed;
-    bottom: -150px; /* Mulai dari bawah layer (tersembunyi) */
+    bottom: -150px; 
     left: 50%;
     transform: translateX(-50%) scale(0.95);
     background: linear-gradient(990deg,rgba(180, 250, 209, 1) 50%, rgba(242, 236, 184, 1) 100%);
@@ -189,7 +62,7 @@
     z-index: 99999999;
     width: 92%;
     max-width: 400px;
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efek memantul mulus */
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); 
     opacity: 0;
     visibility: hidden;
 }
@@ -220,7 +93,7 @@
     border-radius: 1.25rem;
     flex-shrink: 0;
     box-shadow: 0 10px 20px rgba(59, 130, 246, 0.4);
-    animation: pulse-glow 2s infinite; /* Animasi menyala */
+    animation: pulse-glow 2s infinite; 
 }
 
 @keyframes pulse-glow {
@@ -561,7 +434,7 @@
             <div class="pwa-icon">M</div>
             <div class="pwa-text">
                 <h4>Install Admin Pro</h4>
-                <p>Pasang aplikasi ini ke layar utama untuk akses instan yang lebih lancar.</p>
+                <p>Pasang aplikasi ini ke layar utama untuk akses instan tanpa browser.</p>
             </div>
         </div>
         <div class="pwa-actions">
@@ -669,7 +542,7 @@
                     <span class="auth-hint-text">Min. 8 karakter, kombinasi huruf & angka, min. 1 huruf besar</span>
                 </div>
 
-                <button type="submit" id="btn-reg-submit" class="auth-btn-primary">
+                <button type="submit" id="btn-reg-submit" class="auth-btn-primary" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.25);">
                     <i class="fas fa-user-plus"></i> <span>Daftar Akun</span>
                 </button>
             </form>
@@ -930,7 +803,7 @@
                                 <div class="currency-toggle" id="toggle-penjualan" data-active="idr">
                                     <div class="ct-slider"></div>
                                     <button class="ct-btn active" onclick="switchCurrency('penjualan', 'idr')">IDR</button>
-                                    <button class="ct-btn" onclick="switchCurrency('pembelian', 'usd')">USD</button>
+                                    <button class="ct-btn" onclick="switchCurrency('penjualan', 'usd')">USD</button>
                                 </div>
                             </div>
                             <p class="sc-title">Total Penjualan</p>
@@ -1736,83 +1609,68 @@ window.switchTab = function(tabId) {
     }
 };
 
-// ==========================================
-// 5. PWA INSTALL PROMPT & SERVICE WORKER (UPDATED LOGIC)
-// ==========================================
-
-// Daftarkan Service Worker
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./service-worker.js')
-            .catch(err => console.log('SW Registration Failed:', err));
-    });
-}
-
-let deferredPrompt;
-const pwaCard = document.getElementById('pwa-install-card');
-const btnInstall = document.getElementById('pwa-btn-install');
-const btnCancel = document.getElementById('pwa-btn-cancel');
-
-// Deteksi Device Mobile
-const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-
-// Deteksi apakah sedang berjalan di mode PWA (Standalone)
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-
-// Deteksi apakah PWA sudah pernah diinstal (berdasarkan LocalStorage fallback)
-const isInstalled = localStorage.getItem('pwa_admin_installed') === 'true';
-
-// Mencegah dan menangkap event instal resmi (Android/Desktop)
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-});
-
-// Menangkap event saat aplikasi sukses diinstal oleh pengguna
-window.addEventListener('appinstalled', (evt) => {
-    // Kunci PWA Card agar tidak pernah tampil lagi
-    localStorage.setItem('pwa_installed', 'true');
-    if (pwaCard) pwaCard.classList.remove('show');
-});
-
-// MEMAKSA NOTIFIKASI SELALU MUNCUL HANYA DI MOBILE & JIKA BELUM DIINSTAL:
-if (isMobile && !isStandalone && !isInstalled) {
-    setTimeout(() => {
-        if (pwaCard) pwaCard.classList.add('show');
-    }, 2000); // Muncul setelah 2 detik halaman termuat
-}
-
-// Aksi ketika klik tombol INSTALL
-if(btnInstall) {
-    btnInstall.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            // Memanggil pop-up install RESMI browser tanpa harus ke menu titik tiga
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            
-            if (outcome === 'accepted') {
-                pwaCard.classList.remove('show');
-                localStorage.setItem('pwa_installed', 'true');
-            }
-            deferredPrompt = null;
-        } else if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
-            alert('Sistem Apple iOS membatasi instalasi otomatis.\\n\\nSilakan ketuk ikon "Share" (kotak dengan panah atas) di bar bawah Safari, lalu pilih "Add to Home Screen" (Tambahkan ke Layar Utama).');
-        } else {
-            alert('Aplikasi sudah terinstal, atau browser Anda tidak mendukung pop-up instalasi otomatis.');
-            pwaCard.classList.remove('show');
-            // Jika sudah tidak ada prompt dan bukan iOS, berarti kemungkinan besar sudah terinstal.
-            localStorage.setItem('pwa_installed', 'true'); 
-        }
-    });
-}
-
-// Aksi ketika klik Nanti (Cancel)
-if(btnCancel) {
-    btnCancel.addEventListener('click', () => {
-        pwaCard.classList.remove('show');
-    });
-}
-
+ // ==========================================
+ // 5. PWA INSTALL PROMPT & SERVICE WORKER (UPDATED LOGIC)
+ // ==========================================
+ 
+ // Daftarkan Service Worker
+ if ('serviceWorker' in navigator) {
+     window.addEventListener('load', () => {
+         navigator.serviceWorker.register('./service-worker.js')
+             .catch(err => console.log('SW Registration Failed:', err));
+     });
+ }
+ 
+ let deferredPrompt;
+ const pwaCard = document.getElementById('pwa-install-card');
+ const btnInstall = document.getElementById('pwa-btn-install');
+ const btnCancel = document.getElementById('pwa-btn-cancel');
+ 
+ const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+ const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+ const isInstalled = localStorage.getItem('pwa_installed') === 'true';
+ 
+ window.addEventListener('beforeinstallprompt', (e) => {
+     e.preventDefault();
+     deferredPrompt = e;
+ });
+ 
+ window.addEventListener('appinstalled', (evt) => {
+     localStorage.setItem('pwa_admin_installed', 'true');
+     if (pwaCard) pwaCard.classList.remove('show');
+ });
+ 
+ if (isMobile && !isStandalone && !isInstalled) {
+     setTimeout(() => {
+         if (pwaCard) pwaCard.classList.add('show');
+     }, 2000);
+ }
+ 
+ if (btnInstall) {
+     btnInstall.addEventListener('click', async () => {
+         if (deferredPrompt) {
+             deferredPrompt.prompt();
+             const { outcome } = await deferredPrompt.userChoice;
+             if (outcome === 'accepted') {
+                 pwaCard.classList.remove('show');
+                 localStorage.setItem('pwa_installed', 'true');
+             }
+             deferredPrompt = null;
+         } else if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+             alert('Sistem Apple iOS membatasi instalasi otomatis.\n\nSilakan ketuk ikon "Share" (kotak dengan panah atas) di bar bawah Safari, lalu pilih "Add to Home Screen" (Tambahkan ke Layar Utama).');
+         } else {
+             alert('Aplikasi sudah terinstal, atau browser Anda tidak mendukung pop-up instalasi otomatis.');
+             pwaCard.classList.remove('show');
+             localStorage.setItem('pwa_installed', 'true');
+         }
+     });
+ }
+ 
+ if (btnCancel) {
+     btnCancel.addEventListener('click', () => {
+         pwaCard.classList.remove('show');
+     });
+ }
     </script>
 </body>
-</html> 
+</html>
