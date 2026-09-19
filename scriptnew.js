@@ -1,4 +1,4 @@
- let dashData = null; 
+  let dashData = null; 
         let myChartInstance = null; 
         let allTransactions = []; 
         let allUsers = []; 
@@ -12,7 +12,13 @@
         let lastRenderedUsersStr = null;
         let lastRenderedRecentTrxStr = null;
         let lastRenderedAllTrxStr = null;
-
+        
+let appSettings = {
+    durasi: '15',
+    kontak: '081234567890',
+    biaya_usd: '1.5',
+    biaya_idr: '2500'
+};
         // Temporary Payload Registrasi
         let tempRegPayload = null;
 
@@ -1386,6 +1392,18 @@ window.executeDeleteAllTrx = async function() {
             }
         }
 
+function updateSettingsDisplayUI() {
+    const elDurasi = document.getElementById('display-st-durasi');
+    const elKontak = document.getElementById('display-st-kontak');
+    const elBiayaUSD = document.getElementById('display-st-biaya-usd');
+    const elBiayaIDR = document.getElementById('display-st-biaya-idr');
+    
+    if (elDurasi) elDurasi.innerText = appSettings.durasi || '-';
+    if (elKontak) elKontak.innerText = appSettings.kontak || '-';
+    if (elBiayaUSD) elBiayaUSD.innerText = '$' + (appSettings.biaya_usd || '0');
+    if (elBiayaIDR) elBiayaIDR.innerText = 'Rp ' + (appSettings.biaya_idr || '0');
+}
+
         async function fetchDashboardData(isPolling = false) {
             try {
                 const response = await fetch(GAS_URL);
@@ -1393,7 +1411,11 @@ window.executeDeleteAllTrx = async function() {
                 dashData = data; 
                 allTransactions = data.all_transactions || [];
                 allUsers = data.pengguna_list || [];
-                
+                // TAMBAHKAN BAGIAN INI:
+if (data.settings) {
+    appSettings = data.settings;
+    updateSettingsDisplayUI();
+}
                 const ttEl = document.getElementById('val-total-transaksi');
                 if (ttEl.innerText != data.summary.total_transaksi) ttEl.innerText = data.summary.total_transaksi;
                 
@@ -1603,8 +1625,334 @@ window.executeDeleteAllTrx = async function() {
                     });
                 }, 100);
             });
-        
+            
          setInterval(() => {
  fetchDashboardData(true);
  }, 5000);
  });
+        
+   // ==========================================
+// GANTI FUNGSI openSettingModal DAN saveSettingsData
+// ==========================================
+window.openSettingModal = function(type, title, defaultVal, desc) {
+    currentSettingType = type;
+    document.getElementById('setting-modal-title').innerText = title;
+    document.getElementById('setting-modal-desc').innerText = desc;
+    
+    const container = document.getElementById('setting-input-container');
+    container.innerHTML = '';
+    
+    if (type === 'biaya') {
+        const valIDR = appSettings.biaya_idr || '2500';
+        const valUSD = appSettings.biaya_usd || '1.5';
+        
+        container.innerHTML = `
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Biaya Admin (IDR)</label>
+                <div style="position: relative;">
+                    <span style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 600;">Rp</span>
+                    <input type="number" id="input-setting-idr" value="${valIDR}" placeholder="Contoh: 2500" style="width: 100%; padding: 0.75rem 0.75rem 0.75rem 2.5rem; border-radius: 0.5rem; border: 1px solid #cbd5e1; outline: none; font-family: inherit; font-weight: 600; color: #0f172a;">
+                </div>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Biaya Admin (USD)</label>
+                <div style="position: relative;">
+                    <span style="position: absolute; left: 1.1rem; top: 50%; transform: translateY(-50%); color: #64748b; font-weight: 600;">$</span>
+                    <input type="number" step="0.1" id="input-setting-usd" value="${valUSD}" placeholder="Contoh: 1.5" style="width: 100%; padding: 0.75rem 0.75rem 0.75rem 2rem; border-radius: 0.5rem; border: 1px solid #cbd5e1; outline: none; font-family: inherit; font-weight: 600; color: #0f172a;">
+                </div>
+            </div>
+        `;
+    } else {
+        let savedVal = '';
+        if (type === 'durasi') savedVal = appSettings.durasi || defaultVal || '15';
+        else if (type === 'kontak') savedVal = appSettings.kontak || defaultVal || '081234567890';
+        
+        container.innerHTML = `
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; font-size: 0.875rem; font-weight: 600; color: #475569; margin-bottom: 0.5rem;">Masukkan Nilai Baru</label>
+                <input type="${type === 'durasi' ? 'number' : 'text'}" id="input-setting-single" value="${savedVal}" style="width: 100%; padding: 0.75rem; border-radius: 0.5rem; border: 1px solid #cbd5e1; outline: none; font-family: inherit; font-weight: 600; color: #0f172a;">
+            </div>
+        `;
+    }
+    
+    const modal = document.getElementById('modal-settings-edit');
+    modal.style.display = 'flex';
+    void modal.offsetWidth;
+    modal.classList.add('show');
+    
+    window.closeSettingModal = function() {
+    const modal = document.getElementById('modal-settings-edit');
+    modal.classList.remove('show');
+    setTimeout(() => modal.style.display = 'none', 300);
+}
+};
+
+window.saveSettingsData = async function() {
+    const title = document.getElementById('setting-modal-title').innerText;
+    const btn = document.getElementById('btn-save-setting');
+    const icon = btn.querySelector('i');
+    const spanText = btn.querySelector('span');
+    const originalClass = icon.className;
+    const originalText = spanText.innerText;
+    
+    let payload = { action: 'updateSettings', type: currentSettingType };
+    
+    if (currentSettingType === 'biaya') {
+        const valIDR = document.getElementById('input-setting-idr').value.trim();
+        const valUSD = document.getElementById('input-setting-usd').value.trim();
+        
+        if (!valIDR || !valUSD) {
+            showCustomToast('Gagal', 'Kolom IDR dan USD tidak boleh kosong', 'error');
+            return;
+        }
+        
+        payload.biaya_idr = valIDR;
+        payload.biaya_usd = valUSD;
+    } else {
+        const val = document.getElementById('input-setting-single').value.trim();
+        if (!val) {
+            showCustomToast('Gagal', 'Nilai pengaturan tidak boleh kosong', 'error');
+            return;
+        }
+        
+        if (currentSettingType === 'durasi') payload.durasi = val;
+        if (currentSettingType === 'kontak') payload.kontak = val;
+    }
+    
+    // Animasi Loading
+    btn.disabled = true;
+    icon.className = 'fas fa-circle-notch fa-spin';
+    spanText.innerText = 'Menyimpan ke Sheet...';
+    
+    try {
+        const response = await fetch(GAS_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: JSON.stringify(payload)
+        });
+        const resData = await response.json();
+        
+        if (resData.success) {
+            // Update variabel lokal agar UI berubah secara realtime
+            if (currentSettingType === 'biaya') {
+                appSettings.biaya_idr = payload.biaya_idr;
+                appSettings.biaya_usd = payload.biaya_usd;
+            } else if (currentSettingType === 'durasi') {
+                appSettings.durasi = payload.durasi;
+            } else if (currentSettingType === 'kontak') {
+                appSettings.kontak = payload.kontak;
+            }
+            updateSettingsDisplayUI();
+            
+            // Indikator sukses
+            icon.className = 'fas fa-check';
+            spanText.innerText = 'Tersimpan';
+            btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            
+            showCustomToast('Pembaruan Berhasil', resData.message || `${title} telah sukses disimpan ke Google Sheet.`, 'success');
+            
+            setTimeout(() => {
+                closeSettingModal();
+                resetSaveBtn();
+            }, 800);
+        } else {
+            showCustomToast('Gagal', resData.message || 'Gagal menyimpan ke Google Sheet.', 'error');
+            resetSaveBtn();
+        }
+    } catch (err) {
+        showCustomToast('Gagal', 'Terjadi kesalahan jaringan saat menyimpan.', 'error');
+        resetSaveBtn();
+    }
+    
+    function resetSaveBtn() {
+        btn.disabled = false;
+        icon.className = originalClass;
+        spanText.innerText = originalText;
+        btn.style.background = '';
+    }
+};
+
+// ==========================================
+// 3. TOAST NOTIFICATION PREMIUM
+// ==========================================
+function showCustomToast(title, message, type = 'success') {
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 999999; display: flex; flex-direction: column; gap: 10px;';
+        document.body.appendChild(container);
+    }
+    
+    const toast = document.createElement('div');
+    const bgGradient = type === 'success' ? 'linear-gradient(135deg, #10b981, #059669)' : 'linear-gradient(135deg, #ef4444, #dc2626)';
+    const icon = type === 'success' ? 'fa-check-circle' : 'fa-exclamation-triangle';
+    
+    toast.style.cssText = `
+        background: ${bgGradient};
+        color: white;
+        padding: 1rem 1.25rem;
+        border-radius: 1rem;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        min-width: 300px;
+        position: relative;
+        overflow: hidden;
+        animation: toastSlideIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    `;
+    
+    toast.innerHTML = `
+        <div style="background: rgba(255,255,255,0.2); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(5px);">
+            <i class="fas ${icon}" style="font-size: 1.2rem;"></i>
+        </div>
+        <div style="flex: 1; z-index: 2;">
+            <h4 style="margin: 0; font-size: 1rem; font-weight: 700; text-shadow: 0 1px 2px rgba(0,0,0,0.1);">${title}</h4>
+            <p style="margin: 0.25rem 0 0 0; font-size: 0.85rem; opacity: 0.9;">${message}</p>
+        </div>
+        <div style="position: absolute; bottom: 0; left: 0; height: 4px; background: rgba(255,255,255,0.6); animation: toastProgress 4s linear forwards; border-radius: 0 4px 0 0;"></div>
+    `;
+    
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'fadeOutRight 0.4s ease forwards';
+        setTimeout(() => toast.remove(), 400);
+    }, 4000);
+}
+
+// ==========================================
+// 4. SWITCH TAB EXTENDER (Smooth Retrigger)
+// ==========================================
+window.switchTab = function(tabId) {
+    document.querySelectorAll('.view-section').forEach(view => {
+        view.classList.remove('active');
+        view.style.display = 'none';
+        view.style.opacity = '0'; // Persiapan fade in
+    });
+    
+    const targetView = document.getElementById(tabId + '-view');
+    if (targetView) {
+        targetView.classList.add('active');
+        targetView.style.display = 'block';
+        
+        setTimeout(() => {
+            targetView.style.opacity = '1';
+            targetView.style.transition = 'opacity 0.3s ease';
+        }, 10);
+        
+        const animatedEls = targetView.querySelectorAll('.animate-fade-in-up');
+        animatedEls.forEach(el => {
+            el.style.animation = 'none';
+            el.offsetHeight;
+            el.style.animation = null;
+        });
+    }
+    
+    document.querySelectorAll('.ds-nav-item, .mn-item').forEach(item => {
+        item.classList.remove('active');
+        if (item.getAttribute('onclick') && item.getAttribute('onclick').includes(tabId)) {
+            item.classList.add('active');
+        }
+    });
+    
+    // Logic untuk mengatur tampil-sembunyi pencarian dan jam di Navbar
+    const mobileSearch = document.getElementById('mh-search-area');
+    const mobileClock = document.getElementById('mh-clock-area');
+    const desktopSearch = document.getElementById('nav-search-area');
+    const desktopClock = document.getElementById('nav-clock-area');
+    
+    if (tabId === 'dashboard') {
+        // Tampilan Mobile
+        if (mobileSearch) mobileSearch.style.display = 'flex';
+        if (mobileClock) mobileClock.style.display = 'none';
+        
+        // Tampilan Desktop
+        if (desktopSearch) {
+            desktopSearch.style.display = 'flex';
+            desktopSearch.classList.remove('tb-hidden-element');
+        }
+        if (desktopClock) {
+            desktopClock.style.display = 'none';
+            desktopClock.classList.add('tb-hidden-element');
+        }
+    } else {
+        // Tampilan Mobile
+        if (mobileSearch) mobileSearch.style.display = 'none';
+        if (mobileClock) mobileClock.style.display = 'flex';
+        
+        // Tampilan Desktop
+        if (desktopSearch) {
+            desktopSearch.style.display = 'none';
+            desktopSearch.classList.add('tb-hidden-element');
+        }
+        if (desktopClock) {
+            desktopClock.style.display = 'flex';
+            desktopClock.classList.remove('tb-hidden-element');
+        }
+    }
+};
+
+// ==========================================
+// 5. PWA INSTALL PROMPT & SERVICE WORKER (UPDATED LOGIC)
+// ==========================================
+
+// Daftarkan Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+            .catch(err => console.log('SW Registration Failed:', err));
+    });
+}
+
+let deferredPrompt;
+const pwaCard = document.getElementById('pwa-install-card');
+const btnInstall = document.getElementById('pwa-btn-install');
+const btnCancel = document.getElementById('pwa-btn-cancel');
+
+const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+const isInstalled = localStorage.getItem('pwa_installed') === 'true';
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+});
+
+window.addEventListener('appinstalled', (evt) => {
+    localStorage.setItem('pwa_admin_installed', 'true');
+    if (pwaCard) pwaCard.classList.remove('show');
+});
+
+if (isMobile && !isStandalone && !isInstalled) {
+    setTimeout(() => {
+        if (pwaCard) pwaCard.classList.add('show');
+    }, 2000);
+}
+
+if (btnInstall) {
+    btnInstall.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') {
+                pwaCard.classList.remove('show');
+                localStorage.setItem('pwa_installed', 'true');
+            }
+            deferredPrompt = null;
+        } else if (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream) {
+            alert('Sistem Apple iOS membatasi instalasi otomatis.\n\nSilakan ketuk ikon "Share" (kotak dengan panah atas) di bar bawah Safari, lalu pilih "Add to Home Screen" (Tambahkan ke Layar Utama).');
+        } else {
+            alert('Aplikasi sudah terinstal, atau browser Anda tidak mendukung pop-up instalasi otomatis.');
+            pwaCard.classList.remove('show');
+            localStorage.setItem('pwa_installed', 'true');
+        }
+    });
+}
+
+if (btnCancel) {
+    btnCancel.addEventListener('click', () => {
+        pwaCard.classList.remove('show');
+    });
+}
